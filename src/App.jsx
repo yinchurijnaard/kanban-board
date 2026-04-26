@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
-
+import "material-symbols";
 import Header from "./components/Header";
-import DoneCard from "./components/DoneCard";
-import DoingCard from "./components/DoingCard";
-import ToDoCard from "./components/ToDoCard";
+import TaskCard from "./components/TaskCard";
 
 // To Do / Check
-// - User needs to be able to change the task text
 // - Create a light/dark switcher (top-right in the Header component)
 
 const initialTasks = [
@@ -28,29 +25,24 @@ function App() {
     }
   });
   const [inputValue, setInputValue] = useState("");
-  // useState
 
   // useEffect
   useEffect(() => {
     localStorage.setItem("myTasks", JSON.stringify(tasks));
   }, [tasks]);
-  // useEffect
 
   // addTask()
   const addTask = (text) => {
     const newTask = { id: Date.now(), text, status: "todo" };
     setTasks([...tasks, newTask]);
   };
-  // addTask()
 
   // handleAdd()
   const handleAdd = () => {
     if (!inputValue) return;
     addTask(inputValue);
-    console.log("Tasks are:", tasks, "Input value was", inputValue);
     setInputValue("");
   };
-  // handleAdd()
 
   // moveTask()
   const moveTask = (id, newStatus) => {
@@ -70,65 +62,68 @@ function App() {
       ),
     );
   };
-  // updateTask()
 
   // deleteTask()
   const deleteTask = (id) => {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-
-    console.log("Test");
   };
-  // deleteTask()
 
   return (
-    <main className="h-screen w-screen flex flex-col gap-8 bg-neutral-200">
+    <main className="flex flex-col gap-8">
       <Header />
 
       {/* DIV 1 */}
       {/* INPUT FIELD DIV */}
-      <div className="flex flex-col gap-2 p-2 mx-2 border rounded">
-        <p className="text-xl">What do you need to get done?</p>
+      <div className="sm:w-1/2 sm:self-center flex flex-col gap-4 p-4 rounded">
+        <p className="text-2xl sm:text-4xl text-center font-black tracking-tighter bg-linear-to-r from-rose-500 via-sky-500 to-emerald-500 bg-clip-text text-transparent">
+          What do you need to get done?
+        </p>
         <div className="flex flex-row gap-2">
           <input
             type="text"
-            placeholder="For example: work on GitHub Issue"
+            placeholder="e.g.: Work on GitHub Issue"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            className="border rounded p-2 w-full"
+            className="input w-full text-base"
           />
-          <button
-            onClick={handleAdd}
-            className="bg-neutral-500 text-white w-fit py-2 px-4 rounded"
-          >
+          <button onClick={handleAdd} className="btn btn-soft">
             Add
           </button>
         </div>
       </div>
-      {/* INPUT FIELD DIV */}
 
       {/* DIV 2 */}
-      {/* CARD IN COLUMNS FROM SM: */}
-      <div className="flex flex-col gap-8 sm:flex-row mx-2">
-        <ToDoCard
+      {/* TASK CARDS*/}
+      <div className="flex flex-col gap-8 sm:flex-row mx-4 sm:mx-24">
+        <TaskCard
+          title={"To Do"}
+          className={`text-xl font-bold text-blue-500`}
           tasks={tasks.filter((t) => t.status === "todo")}
           moveTask={moveTask}
           updateTask={updateTask}
           deleteTask={deleteTask}
+          nextStatus="doing"
         />
-        <DoingCard
+        <TaskCard
+          title={"In Progress"}
+          className={`text-xl font-bold text-yellow-500`}
           tasks={tasks.filter((t) => t.status === "doing")}
           moveTask={moveTask}
           updateTask={updateTask}
           deleteTask={deleteTask}
+          prevStatus="todo"
+          nextStatus="done"
         />
-        <DoneCard
+        <TaskCard
+          title={"Done"}
+          className={`text-xl font-bold text-green-500`}
           tasks={tasks.filter((t) => t.status === "done")}
           moveTask={moveTask}
           updateTask={updateTask}
           deleteTask={deleteTask}
+          prevStatus="doing"
         />
       </div>
-      {/* CARD IN COLUMNS FROM SM: */}
     </main>
   );
 }

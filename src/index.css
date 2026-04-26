@@ -1,3 +1,48 @@
 @import "tailwindcss";
-/* Remove daisyUI for now, because of another node_modules error */
-/* @plugin "daisyui"; */
+
+@plugin "daisyui/index.js";
+
+/* https://invertcolors.net/ */
+
+@theme {
+  --color-main-bg: #111111;
+  --color-main-text: #fafafa;
+  --color-sec-text: #d5d5d5;
+  --color-third-text: #2a2a2a;
+  --color-main-border: #2a2a2a;
+  --color-card-bg: #d5d5d5;
+}
+
+@variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-main-bg: #eeeeee;
+    --color-main-text: #050505;
+    --color-sec-text: #2a2a2a;
+    --color-third-text: #d5d5d5;
+    --color-main-border: #d5d5d5;
+    --color-card-bg: #2a2a2a;
+  }
+}
+
+@light {
+  --color-main-bg: #eeeeee;
+  --color-main-text: #050505;
+  --color-sec-text: #2a2a2a;
+  --color-third-text: #d5d5d5;
+  --color-main-border: #d5d5d5;
+  --color-card-bg: #2a2a2a;
+}
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+  }
+  /* Add main instead of just body, temp. fix */
+  main,
+  body {
+    @apply bg-main-bg text-main-text;
+  }
+}
