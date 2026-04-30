@@ -27,6 +27,7 @@ const TaskItem = ({
               updateTask(task.id, editText);
               setIsEditing(false);
             }}
+            aria-label="save edited task name"
           >
             <span class="material-symbols-outlined">save</span>
           </button>
@@ -34,7 +35,10 @@ const TaskItem = ({
       ) : (
         <>
           <p className="w-full">{task.text}</p>
-          <button onClick={() => setIsEditing(true)}>
+          <button
+            onClick={() => setIsEditing(true)}
+            aria-label="edit task name"
+          >
             <span class="material-symbols-outlined">edit</span>
           </button>
         </>
@@ -42,19 +46,25 @@ const TaskItem = ({
 
       {/* Conditionally rendering the forward and backward buttons */}
       {prevStatus && (
-        <button onClick={() => moveTask(task.id, prevStatus)}>
+        <button
+          onClick={() => moveTask(task.id, prevStatus)}
+          aria-label="move task backwards one column"
+        >
           <span class="material-symbols-outlined">arrow_back</span>
         </button>
       )}
 
       {nextStatus && (
-        <button onClick={() => moveTask(task.id, nextStatus)}>
+        <button
+          onClick={() => moveTask(task.id, nextStatus)}
+          aria-label="move task forward one column"
+        >
           <span class="material-symbols-outlined">arrow_forward</span>
         </button>
       )}
 
       {/* Delete button */}
-      <button onClick={() => deleteTask(task.id)}>
+      <button onClick={() => deleteTask(task.id)} aria-label="delete task">
         <span class="material-symbols-outlined">delete</span>
       </button>
     </div>
